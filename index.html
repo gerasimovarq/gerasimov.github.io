@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сергей Герасимов — Моушн-дизайнер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F4F0;
+    --ink: #181818;
+    --ink-soft: #888;
+    --accent: #73C2FB;
+    --white: #fff;
+    --f-display: 'Unbounded', sans-serif;
+    --f-body: 'Manrope', sans-serif;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.6;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  #cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width .25s var(--ease), height .25s var(--ease);
+  }
+  #cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 38px; height: 38px;
+    border: 1.5px solid rgba(24,24,24,.25);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width .3s var(--ease), height .3s var(--ease), border-color .3s;
+  }
+  body.cursor-hover #cursor { width: 20px; height: 20px; }
+  body.cursor-hover #cursor-ring { width: 60px; height: 60px; opacity: .2; }
+  body.cursor-dark #cursor-ring { border-color: rgba(255,255,255,.3); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 48px;
+    transition: padding .4s var(--ease), background .4s, backdrop-filter .4s, border-color .4s;
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled {
+    padding: 18px 48px;
+    background: rgba(245,244,240,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom-color: rgba(24,24,24,.08);
+  }
+  .nav-logo {
+    font-family: var(--f-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    opacity: .45;
+    transition: opacity .2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100svh;
+    padding: 0 48px 56px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* иллюстрация — блоб */
+  .hero-illus {
+    position: absolute;
+    top: 50%; right: -2%;
+    transform: translateY(-50%);
+    width: clamp(360px, 50vw, 720px);
+    aspect-ratio: 1;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .blob-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+  }
+  @keyframes morph1 {
+    0%,100% { border-radius: 58% 42% 54% 46% / 52% 48% 58% 42%; transform: rotate(0deg) scale(1); }
+    25%      { border-radius: 46% 54% 44% 56% / 60% 40% 52% 48%; transform: rotate(4deg) scale(1.01); }
+    50%      { border-radius: 52% 48% 62% 38% / 44% 56% 46% 54%; transform: rotate(-3deg) scale(.99); }
+    75%      { border-radius: 60% 40% 50% 50% / 50% 52% 48% 50%; transform: rotate(2deg) scale(1.005); }
+  }
+  @keyframes morph2 {
+    0%,100% { border-radius: 54% 46% 60% 40% / 48% 56% 44% 52%; transform: rotate(0deg) scale(1); }
+    30%      { border-radius: 44% 56% 48% 52% / 58% 42% 56% 44%; transform: rotate(-5deg) scale(1.015); }
+    60%      { border-radius: 62% 38% 52% 48% / 46% 54% 50% 50%; transform: rotate(3deg) scale(.985); }
+  }
+  @keyframes morph3 {
+    0%,100% { border-radius: 50% 50% 56% 44% / 54% 46% 60% 40%; transform: rotate(0deg) scale(1); }
+    40%      { border-radius: 58% 42% 46% 54% / 46% 54% 44% 56%; transform: rotate(6deg) scale(1.02); }
+    70%      { border-radius: 44% 56% 60% 40% / 52% 48% 56% 44%; transform: rotate(-4deg) scale(.98); }
+  }
+  .b1 { background: rgba(115,194,251,.10); animation: morph1 14s ease-in-out infinite; }
+  .b2 { inset: 6%;  background: rgba(100,183,245,.16); animation: morph2 13s ease-in-out .8s infinite; }
+  .b3 { inset: 12%; background: rgba(85,170,238,.22);  animation: morph3 12s ease-in-out 1.4s infinite; }
+  .b4 { inset: 18%; background: rgba(70,155,228,.28);  animation: morph1 13s ease-in-out 2s infinite reverse; }
+  .b5 { inset: 25%; background: rgba(55,140,215,.35);  animation: morph2 11s ease-in-out 2.5s infinite; }
+  .b6 { inset: 32%; background: rgba(40,122,200,.44);  animation: morph3 12s ease-in-out 3s infinite reverse; }
+  .b7 { inset: 39%; background: rgba(28,105,182,.55);  animation: morph1 10s ease-in-out 3.5s infinite; }
+  .b8 { inset: 46%; background: rgba(18,88,160,.68);   animation: morph2 11s ease-in-out 4s infinite reverse; }
+  .b9 { inset: 53%; background: rgba(12,65,130,.82);   animation: morph3 9s ease-in-out 4.5s infinite; }
+
+  .hero-top {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 2;
+    padding-top: 140px;
+  }
+  .name-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp .9s var(--ease) .1s forwards;
+  }
+  .hero-name {
+    font-family: var(--f-display);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .name-line { flex-shrink: 0; width: 80px; height: 1px; background: rgba(24,24,24,.18); }
+  .name-dot  { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  h1 {
+    font-family: var(--f-display);
+    font-size: clamp(56px, 12.5vw, 182px);
+    font-weight: 900;
+    line-height: .88;
+    letter-spacing: -.035em;
+    opacity: 0;
+    animation: fadeUp .9s var(--ease) .22s forwards;
+  }
+  h1 .dot { color: var(--accent); }
+
+  .hero-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    border-top: 1px solid rgba(24,24,24,.1);
+    padding-top: 28px;
+    margin-top: 40px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp .9s var(--ease) .38s forwards;
+  }
+  .hero-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    max-width: 440px;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--f-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-decoration: none;
+    color: var(--white);
+    background: var(--ink);
+    padding: 16px 28px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background .2s, color .2s, transform .2s var(--ease);
+  }
+  .hero-cta:hover { background: var(--accent); color: var(--ink); transform: scale(1.04); }
+  .hero-cta .arrow { transition: transform .2s var(--ease); }
+  .hero-cta:hover .arrow { transform: translate(3px, -3px); }
+
+  /* ── SHARED ── */
+  section { padding: 112px 48px; }
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 64px;
+  }
+  .section-label::before {
+    content: '';
+    width: 24px; height: 1.5px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ── SERVICES ── */
+  #services { border-top: 1px solid rgba(24,24,24,.1); }
+  .services-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 72px;
+    align-items: end;
+  }
+  .services-title {
+    font-family: var(--f-display);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+  }
+  .services-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 380px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .service-card {
+    background: var(--white);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background .25s var(--ease);
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s var(--ease);
+  }
+  .service-card:hover { background: var(--ink); }
+  .service-card:hover .service-name,
+  .service-card:hover .service-detail { color: var(--white); }
+  .service-card:hover .service-num { color: var(--accent); }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-num {
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(24,24,24,.22);
+    letter-spacing: .1em;
+    margin-bottom: 24px;
+    transition: color .25s;
+  }
+  .service-name {
+    font-family: var(--f-display);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -.01em;
+    margin-bottom: 12px;
+    transition: color .25s;
+  }
+  .service-detail {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    transition: color .25s;
+  }
+
+  /* ── PORTFOLIO ── */
+  #portfolio {
+    background: var(--ink);
+    color: var(--white);
+  }
+  #portfolio .section-label { color: rgba(255,255,255,.3); }
+  #portfolio .section-label::before { background: var(--accent); }
+
+  .portfolio-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 72px;
+  }
+  .portfolio-title {
+    font-family: var(--f-display);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: var(--white);
+  }
+  .portfolio-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,.4);
+    line-height: 1.7;
+    max-width: 380px;
+  }
+
+  .portfolio-showreel {
+    margin-bottom: 3px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    background: #000;
+  }
+  .portfolio-showreel iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+  .portfolio-links-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .portfolio-link-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 36px;
+    background: rgba(255,255,255,.05);
+    text-decoration: none;
+    color: var(--white);
+    transition: background .2s, color .2s, transform .2s var(--ease);
+    border-radius: 4px;
+  }
+  .portfolio-link-item:hover { background: var(--accent); color: var(--ink); transform: translateX(5px); }
+  .portfolio-link-name {
+    font-family: var(--f-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .portfolio-link-meta {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,.4);
+    margin-top: 2px;
+    transition: color .2s;
+  }
+  .portfolio-link-item:hover .portfolio-link-meta { color: rgba(0,0,0,.45); }
+  .portfolio-link-arrow { font-size: 18px; opacity: .4; transition: opacity .2s, transform .2s var(--ease); }
+  .portfolio-link-item:hover .portfolio-link-arrow { opacity: 1; transform: translate(3px, -3px); }
+
+  /* ── REVIEWS ── */
+  #reviews { border-top: 1px solid rgba(24,24,24,.1); }
+  .reviews-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 72px;
+  }
+  .reviews-title {
+    font-family: var(--f-display);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+  }
+  .reviews-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 360px;
+  }
+  .reviews-featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+  .review-card {
+    background: var(--white);
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+  }
+  .review-quote {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .review-quote::before { content: '\201C'; }
+  .review-quote::after  { content: '\201D'; }
+  .review-name {
+    font-family: var(--f-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .01em;
+  }
+  .review-role {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  /* ticker */
+  .reviews-ticker-wrap {
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .reviews-ticker {
+    display: flex;
+    width: max-content;
+    animation: ticker 50s linear infinite;
+  }
+  .reviews-ticker-wrap:hover .reviews-ticker { animation-play-state: paused; }
+  .ticker-item {
+    padding: 22px 44px;
+    border-right: 1px solid rgba(255,255,255,.07);
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,.6);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+  .ticker-item::before {
+    content: '★';
+    color: var(--accent);
+    font-size: 10px;
+  }
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── CONTACT ── */
+  #contact { border-top: 1px solid rgba(24,24,24,.1); }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .contact-title {
+    font-family: var(--f-display);
+    font-size: clamp(36px, 5.5vw, 80px);
+    font-weight: 900;
+    line-height: .92;
+    letter-spacing: -.03em;
+  }
+  .contact-title em { font-style: normal; color: var(--accent); }
+  .contact-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 6px; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 28px;
+    border: 1.5px solid rgba(24,24,24,.12);
+    border-radius: 100px;
+    text-decoration: none;
+    color: var(--ink);
+    font-family: var(--f-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    transition: background .2s, border-color .2s, color .2s, transform .2s var(--ease);
+  }
+  .contact-link:hover { background: var(--ink); color: var(--white); border-color: var(--ink); transform: scale(1.02); }
+  .contact-link-platform { font-size: 11px; font-weight: 400; opacity: .45; letter-spacing: .06em; text-transform: uppercase; }
+  .contact-link-arr { transition: transform .2s var(--ease); }
+  .contact-link:hover .contact-link-arr { transform: translate(3px, -3px); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px 48px;
+    border-top: 1px solid rgba(24,24,24,.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+  footer strong { font-family: var(--f-display); font-size: 11px; font-weight: 700; color: var(--ink); letter-spacing: .04em; }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .85s var(--ease), transform .85s var(--ease);
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @keyframes fadeUp    { to { opacity: 1; transform: none; } }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 22px 24px; }
+    .nav-links { display: none; }
+    #hero { padding: 0 24px 56px; }
+    section { padding: 80px 24px; }
+    footer { padding: 28px 24px; flex-direction: column; gap: 6px; text-align: center; }
+
+    .hero-illus { width: 90vw; top: auto; bottom: -10%; right: -10%; transform: none; opacity: .45; }
+    .hero-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
+
+    .services-header { grid-template-columns: 1fr; margin-bottom: 48px; }
+    .services-grid { grid-template-columns: 1fr; }
+
+    .portfolio-header { grid-template-columns: 1fr; margin-bottom: 48px; }
+    .portfolio-links-row { grid-template-columns: 1fr; }
+
+    .reviews-header { grid-template-columns: 1fr; margin-bottom: 48px; }
+    .reviews-featured { grid-template-columns: 1fr; }
+
+    .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+
+    body { cursor: auto; }
+    #cursor, #cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">SG</a>
+  <ul class="nav-links">
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#portfolio">Работы</a></li>
+    <li><a href="#reviews">Отзывы</a></li>
+    <li><a href="#contact">Контакт</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+
+  <div class="hero-illus">
+    <div class="blob-layer b1"></div>
+    <div class="blob-layer b2"></div>
+    <div class="blob-layer b3"></div>
+    <div class="blob-layer b4"></div>
+    <div class="blob-layer b5"></div>
+    <div class="blob-layer b6"></div>
+    <div class="blob-layer b7"></div>
+    <div class="blob-layer b8"></div>
+    <div class="blob-layer b9"></div>
+  </div>
+
+  <div class="hero-top">
+    <div class="name-row">
+      <span class="hero-name">Сергей Герасимов</span>
+      <span class="name-line"></span>
+      <span class="name-dot"></span>
+    </div>
+    <h1>
+      Моушн-<br>дизайнер<span class="dot">.</span>
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
+    <p class="hero-desc">Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.</p>
+    <a href="#contact" class="hero-cta">Обсудить проект <span class="arrow">↗</span></a>
+  </div>
+
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">Услуги</div>
+  <div class="services-header reveal">
+    <h2 class="services-title">Что я&nbsp;делаю</h2>
+    <p class="services-sub">Работаю с&nbsp;брендами, агентствами и&nbsp;продуктовыми командами. Нужна анимация&nbsp;— обращайтесь.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div class="service-name">Логотипы, инфографика, персонажи</div>
+      <div class="service-detail">Оживляю брендовые элементы и&nbsp;иллюстрации. Работаю с&nbsp;любыми стилями.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">02</div>
+      <div class="service-name">YouTube: интро, аутро, анимированные вставки</div>
+      <div class="service-detail">Фирменные заставки и&nbsp;переходы для видеоблогеров и&nbsp;каналов.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
+      <div class="service-name">Lottie-анимации</div>
+      <div class="service-detail">Лёгкие JSON-анимации для сайтов и&nbsp;мобильных приложений.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">04</div>
+      <div class="service-name">Анимированные стикеры и&nbsp;эмодзи для Telegram</div>
+      <div class="service-detail">Только анимация: TGS-стикеры и&nbsp;кастомные эмодзи для брендов и&nbsp;сообществ.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">05</div>
+      <div class="service-name">Объясняющие и&nbsp;промо-видео, шоурилы</div>
+      <div class="service-detail">Рассказываю о&nbsp;продукте, услуге или&nbsp;идее так, чтобы это запомнилось.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">06</div>
+      <div class="service-name">Анимация презентаций и&nbsp;портфолио</div>
+      <div class="service-detail">Добавляю движение в&nbsp;слайды, чтобы выступление запоминалось.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-label">Работы</div>
+  <div class="portfolio-header reveal">
+    <h2 class="portfolio-title">Избранное</h2>
+    <p class="portfolio-sub">Шоурил и ссылки на площадки с работами.</p>
+  </div>
+  <div class="portfolio-showreel reveal">
+    <iframe
+      id="showreel-iframe"
+      src="https://www.youtube-nocookie.com/embed/d0YL5g78kRU?rel=0&modestbranding=1&enablejsapi=1"
+      title="Showreel — Сергей Герасимов"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <div class="portfolio-links-row reveal">
+    <a href="https://dribbble.com/motionpattern" target="_blank" rel="noopener" class="portfolio-link-item">
+      <div>
+        <div class="portfolio-link-name">Dribbble</div>
+        <div class="portfolio-link-meta">motionpattern</div>
+      </div>
+      <span class="portfolio-link-arrow">↗</span>
+    </a>
+    <a href="https://instagram.com/motion.pattern" target="_blank" rel="noopener" class="portfolio-link-item">
+      <div>
+        <div class="portfolio-link-name">Instagram</div>
+        <div class="portfolio-link-meta">motion.pattern</div>
+      </div>
+      <span class="portfolio-link-arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-label">Отзывы</div>
+  <div class="reviews-header reveal">
+    <h2 class="reviews-title">Говорят клиенты</h2>
+    <p class="reviews-sub">Работал с&nbsp;брендами и&nbsp;командами из&nbsp;разных стран. Вот что они говорят.</p>
+  </div>
+
+  <div class="reviews-featured">
+    <div class="review-card reveal">
+      <p class="review-quote">Sergei is a great art-director and designer who can both take responsibility and think out of the box. The outcome exceeded any expectations. He was easy-going, deadline-respectful and very attentive to the details. Such a catch if you need a trustworthy partner for any work-related projects.</p>
+      <div>
+        <div class="review-name">Elena Z.</div>
+        <div class="review-role">Co-CEO, Purpur</div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <p class="review-quote">His approach was very professional, fast and gave helpful feedbacks to illustrator to make the animation more interesting. I already look forward to our next collaboration, and highly recommend Sergei's services.</p>
+      <div>
+        <div class="review-name">Tímea Lipčíková</div>
+        <div class="review-role">Creative Director / Illustrator</div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <p class="review-quote">Sergei combines strong artistic vision with technical precision, delivering animations that feel effortless, polished, and aligned with the brand's tone. He understands context quickly, asks the right questions, and always brings ideas that elevate the final result beyond expectations.</p>
+      <div>
+        <div class="review-name">Victor Makarov</div>
+        <div class="review-role">Founder, Worth Agency</div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <p class="review-quote">I would mention his ability to dive deep into the brief, keen eye to details and a positive way to handle comments. I highly appreciated his proactive approach as well as his ability to work in a rather tough timeframe without compromising the quality.</p>
+      <div>
+        <div class="review-name">Alessia Erigo</div>
+        <div class="review-role">Creative Director</div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <p class="review-quote">Sergei always provides us with options to choose from and guides us through the project with his excellent craft and art skills. We have collaborated on many projects and are willing to continue.</p>
+      <div>
+        <div class="review-name">Nikolay Khlopov</div>
+        <div class="review-role">Founder, Algorithm Trend Intelligence</div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <p class="review-quote">Absolutely blown away by Sergei's great work. He took my vague brief and turned it into a masterpiece — can't wait to work together again.</p>
+      <div>
+        <div class="review-name">Joshua Richardson</div>
+        <div class="review-role">Science Communicator, NGO FitMind</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews-ticker-wrap">
+    <div class="reviews-ticker">
+      <div class="ticker-item">He completes my briefs perfectly every single time.</div>
+      <div class="ticker-item">Working with Sergei is always a pleasure — his work is outstanding.</div>
+      <div class="ticker-item">Easy to work with. Understands the brief and always does a great job!</div>
+      <div class="ticker-item">Very accommodating, always willing to submit projects on time and efficiently.</div>
+      <div class="ticker-item">Quick to respond and finishes the work perfectly. He helps extend my brief too.</div>
+      <div class="ticker-item">Delivered just what we'd envisioned, and even did a little extra side deliverable.</div>
+      <div class="ticker-item">Went above and beyond, offering great alternative animations.</div>
+      <div class="ticker-item">Work was completed quickly and perfectly — a great hire. He is AWESOME!</div>
+      <!-- duplicate for seamless loop -->
+      <div class="ticker-item">He completes my briefs perfectly every single time.</div>
+      <div class="ticker-item">Working with Sergei is always a pleasure — his work is outstanding.</div>
+      <div class="ticker-item">Easy to work with. Understands the brief and always does a great job!</div>
+      <div class="ticker-item">Very accommodating, always willing to submit projects on time and efficiently.</div>
+      <div class="ticker-item">Quick to respond and finishes the work perfectly. He helps extend my brief too.</div>
+      <div class="ticker-item">Delivered just what we'd envisioned, and even did a little extra side deliverable.</div>
+      <div class="ticker-item">Went above and beyond, offering great alternative animations.</div>
+      <div class="ticker-item">Work was completed quickly and perfectly — a great hire. He is AWESOME!</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Контакт</div>
+  <div class="contact-inner">
+    <div class="reveal">
+      <h2 class="contact-title">Есть<br>проект<em>?</em></h2>
+    </div>
+    <div class="reveal">
+      <p class="contact-desc">Расскажите о&nbsp;задаче&nbsp;— обсудим детали, сроки и&nbsp;стоимость. Обычно отвечаю в&nbsp;течение дня.</p>
+      <div class="contact-links">
+        <a href="https://t.me/gerasimovarq" target="_blank" rel="noopener" class="contact-link">
+          <span>Telegram</span>
+          <span class="contact-link-platform">@gerasimovarq</span>
+          <span class="contact-link-arr">↗</span>
+        </a>
+        <a href="https://instagram.com/motion.pattern" target="_blank" rel="noopener" class="contact-link">
+          <span>Instagram</span>
+          <span class="contact-link-platform">motion.pattern</span>
+          <span class="contact-link-arr">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Сергей Герасимов</strong>
+  <span>© 2026 · Моушн-дизайнер</span>
+</footer>
+
+<script>
+  // ── Cursor
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+    // detect dark bg
+    const el = document.elementFromPoint(mx, my);
+    const onDark = el && el.closest('#portfolio, .reviews-ticker-wrap');
+    document.body.classList.toggle('cursor-dark', !!onDark);
+  });
+
+  (function loop() {
+    rx += (mx - rx) * .11;
+    ry += (my - ry) * .11;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(loop);
+  })();
+
+  document.querySelectorAll('a, button, .service-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  // ── Nav scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // ── Showreel autoplay
+  const showreelIframe = document.getElementById('showreel-iframe');
+  if (showreelIframe) {
+    const showreelObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const src = showreelIframe.src;
+        if (entry.isIntersecting) {
+          // Add autoplay+mute if not already present
+          if (!src.includes('autoplay=1')) {
+            showreelIframe.src = src + '&autoplay=1&mute=1';
+          }
+        } else {
+          // Stop playback when out of view by resetting src without autoplay
+          showreelIframe.src = showreelIframe.src
+            .replace('&autoplay=1&mute=1', '')
+            .replace('&autoplay=1', '')
+            .replace('&mute=1', '');
+        }
+      });
+    }, { threshold: 0.4 });
+    showreelObs.observe(showreelIframe);
+  }
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const siblings = entry.target.parentElement.querySelectorAll('.reveal');
+      siblings.forEach((el, i) => setTimeout(() => el.classList.add('visible'), i * 75));
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
