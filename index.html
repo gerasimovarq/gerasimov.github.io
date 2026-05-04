@@ -110,46 +110,27 @@
     overflow: hidden;
   }
 
-  /* иллюстрация — блоб */
-  .hero-illus {
+  /* иллюстрация — блоб (canvas) */
+  .blob-anchor {
     position: absolute;
     top: 50%; right: -2%;
     transform: translateY(-50%);
     width: clamp(360px, 50vw, 720px);
     aspect-ratio: 1;
-    pointer-events: none;
     z-index: 1;
+    pointer-events: none;
+    overflow: visible;
   }
-  .blob-layer {
+  /* на мобайле — убираем интерактив, показываем как декор */
+  @media (max-width: 900px) {
+    .blob-anchor { width: 90vw; top: auto; bottom: -10%; right: -10%; transform: none; opacity: .45; pointer-events: none; }
+  }
+  canvas#blob-cv {
     position: absolute;
-    inset: 0;
-    border-radius: 50%;
+    top: -25%; left: -35%;
+    width: 160%; height: 150%;
+    display: block;
   }
-  @keyframes morph1 {
-    0%,100% { border-radius: 58% 42% 54% 46% / 52% 48% 58% 42%; transform: rotate(0deg) scale(1); }
-    25%      { border-radius: 46% 54% 44% 56% / 60% 40% 52% 48%; transform: rotate(4deg) scale(1.01); }
-    50%      { border-radius: 52% 48% 62% 38% / 44% 56% 46% 54%; transform: rotate(-3deg) scale(.99); }
-    75%      { border-radius: 60% 40% 50% 50% / 50% 52% 48% 50%; transform: rotate(2deg) scale(1.005); }
-  }
-  @keyframes morph2 {
-    0%,100% { border-radius: 54% 46% 60% 40% / 48% 56% 44% 52%; transform: rotate(0deg) scale(1); }
-    30%      { border-radius: 44% 56% 48% 52% / 58% 42% 56% 44%; transform: rotate(-5deg) scale(1.015); }
-    60%      { border-radius: 62% 38% 52% 48% / 46% 54% 50% 50%; transform: rotate(3deg) scale(.985); }
-  }
-  @keyframes morph3 {
-    0%,100% { border-radius: 50% 50% 56% 44% / 54% 46% 60% 40%; transform: rotate(0deg) scale(1); }
-    40%      { border-radius: 58% 42% 46% 54% / 46% 54% 44% 56%; transform: rotate(6deg) scale(1.02); }
-    70%      { border-radius: 44% 56% 60% 40% / 52% 48% 56% 44%; transform: rotate(-4deg) scale(.98); }
-  }
-  .b1 { background: rgba(115,194,251,.10); animation: morph1 14s ease-in-out infinite; }
-  .b2 { inset: 6%;  background: rgba(100,183,245,.16); animation: morph2 13s ease-in-out .8s infinite; }
-  .b3 { inset: 12%; background: rgba(85,170,238,.22);  animation: morph3 12s ease-in-out 1.4s infinite; }
-  .b4 { inset: 18%; background: rgba(70,155,228,.28);  animation: morph1 13s ease-in-out 2s infinite reverse; }
-  .b5 { inset: 25%; background: rgba(55,140,215,.35);  animation: morph2 11s ease-in-out 2.5s infinite; }
-  .b6 { inset: 32%; background: rgba(40,122,200,.44);  animation: morph3 12s ease-in-out 3s infinite reverse; }
-  .b7 { inset: 39%; background: rgba(28,105,182,.55);  animation: morph1 10s ease-in-out 3.5s infinite; }
-  .b8 { inset: 46%; background: rgba(18,88,160,.68);   animation: morph2 11s ease-in-out 4s infinite reverse; }
-  .b9 { inset: 53%; background: rgba(12,65,130,.82);   animation: morph3 9s ease-in-out 4.5s infinite; }
 
   .hero-top {
     flex: 1;
@@ -544,6 +525,36 @@
   .contact-link-arr { transition: transform .2s var(--ease); }
   .contact-link:hover .contact-link-arr { transform: translate(3px, -3px); }
 
+  /* ── SCROLL TO TOP ── */
+  #scroll-top {
+    position: fixed;
+    bottom: 36px; right: 40px;
+    width: 48px; height: 48px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .3s var(--ease), transform .3s var(--ease), background .2s;
+    pointer-events: none;
+  }
+  #scroll-top.visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  #scroll-top:hover { background: var(--accent); }
+  #scroll-top svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  @media (max-width: 900px) {
+    #scroll-top { cursor: auto; bottom: 24px; right: 24px; }
+  }
+
   /* ── FOOTER ── */
   footer {
     padding: 32px 48px;
@@ -613,17 +624,7 @@
 <!-- HERO -->
 <section id="hero">
 
-  <div class="hero-illus">
-    <div class="blob-layer b1"></div>
-    <div class="blob-layer b2"></div>
-    <div class="blob-layer b3"></div>
-    <div class="blob-layer b4"></div>
-    <div class="blob-layer b5"></div>
-    <div class="blob-layer b6"></div>
-    <div class="blob-layer b7"></div>
-    <div class="blob-layer b8"></div>
-    <div class="blob-layer b9"></div>
-  </div>
+  <div class="blob-anchor" id="blob-anchor"><canvas id="blob-cv"></canvas></div>
 
   <div class="hero-top">
     <div class="name-row">
@@ -826,6 +827,11 @@
   <span>© 2026 · Моушн-дизайнер</span>
 </footer>
 
+<!-- SCROLL TO TOP -->
+<button id="scroll-top" aria-label="Наверх">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
 <script>
   // ── Cursor
   const cursor = document.getElementById('cursor');
@@ -836,18 +842,17 @@
     mx = e.clientX; my = e.clientY;
     cursor.style.left = mx + 'px';
     cursor.style.top  = my + 'px';
-    // detect dark bg
     const el = document.elementFromPoint(mx, my);
     const onDark = el && el.closest('#portfolio, .reviews-ticker-wrap');
     document.body.classList.toggle('cursor-dark', !!onDark);
   });
 
-  (function loop() {
+  (function ringLoop() {
     rx += (mx - rx) * .11;
     ry += (my - ry) * .11;
     ring.style.left = rx + 'px';
     ring.style.top  = ry + 'px';
-    requestAnimationFrame(loop);
+    requestAnimationFrame(ringLoop);
   })();
 
   document.querySelectorAll('a, button, .service-card').forEach(el => {
@@ -866,16 +871,14 @@
   if (showreelVideo) {
     const showreelObs = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          showreelVideo.play();
-        } else {
-          showreelVideo.pause();
-        }
+        if (entry.isIntersecting) { showreelVideo.play(); }
+        else { showreelVideo.pause(); }
       });
     }, { threshold: 0.4 });
     showreelObs.observe(showreelVideo);
   }
 
+  // ── Reveal on scroll
   const io = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -884,8 +887,195 @@
       io.unobserve(entry.target);
     });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ── Scroll to top
+  const scrollTopBtn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => {
+    scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  scrollTopBtn.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  scrollTopBtn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+
+  // ── Blob canvas (desktop only)
+  (function() {
+    const isDesktop = window.matchMedia('(min-width: 901px)').matches;
+    const anchor = document.getElementById('blob-anchor');
+    const cv = document.getElementById('blob-cv');
+    if (!anchor || !cv) return;
+
+    const ctx = cv.getContext('2d');
+    function resize() { cv.width = cv.offsetWidth; cv.height = cv.offsetHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const ANIM = {
+      m1: { stops:[0,.25,.5,.75,1], frames:[
+        {br:[58,42,54,46,52,48,58,42],rot:0,   sc:1},
+        {br:[46,54,44,56,60,40,52,48],rot:4,   sc:1.01},
+        {br:[52,48,62,38,44,56,46,54],rot:-3,  sc:.99},
+        {br:[60,40,50,50,50,52,48,50],rot:2,   sc:1.005},
+        {br:[58,42,54,46,52,48,58,42],rot:0,   sc:1},
+      ]},
+      m2: { stops:[0,.3,.6,1], frames:[
+        {br:[54,46,60,40,48,56,44,52],rot:0,  sc:1},
+        {br:[44,56,48,52,58,42,56,44],rot:-5, sc:1.015},
+        {br:[62,38,52,48,46,54,50,50],rot:3,  sc:.985},
+        {br:[54,46,60,40,48,56,44,52],rot:0,  sc:1},
+      ]},
+      m3: { stops:[0,.4,.7,1], frames:[
+        {br:[50,50,56,44,54,46,60,40],rot:0,  sc:1},
+        {br:[58,42,46,54,46,54,44,56],rot:6,  sc:1.02},
+        {br:[44,56,60,40,52,48,56,44],rot:-4, sc:.98},
+        {br:[50,50,56,44,54,46,60,40],rot:0,  sc:1},
+      ]}
+    };
+
+    const LAYERS = [
+      {inset:0,   rgba:[115,194,251,.10],anim:'m1',durMs:14000,delayMs:0,   rev:false},
+      {inset:.06, rgba:[100,183,245,.16],anim:'m2',durMs:13000,delayMs:800, rev:false},
+      {inset:.12, rgba:[85,170,238,.22], anim:'m3',durMs:12000,delayMs:1400,rev:false},
+      {inset:.18, rgba:[70,155,228,.28], anim:'m1',durMs:13000,delayMs:2000,rev:true},
+      {inset:.25, rgba:[55,140,215,.35], anim:'m2',durMs:11000,delayMs:2500,rev:false},
+      {inset:.32, rgba:[40,122,200,.44], anim:'m3',durMs:12000,delayMs:3000,rev:true},
+      {inset:.39, rgba:[28,105,182,.55], anim:'m1',durMs:10000,delayMs:3500,rev:false},
+      {inset:.46, rgba:[18,88,160,.68],  anim:'m2',durMs:11000,delayMs:4000,rev:true},
+      {inset:.53, rgba:[12,65,130,.82],  anim:'m3',durMs:9000, delayMs:4500,rev:false},
+    ];
+
+    function eio(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+    function lerp(a,b,t) { return a+(b-a)*t; }
+    function clamp(v,mn,mx) { return Math.max(mn,Math.min(mx,v)); }
+    function smoothstep(e0,e1,x) { const t=clamp((x-e0)/(e1-e0),0,1); return t*t*(3-2*t); }
+
+    function getFrame(key,ts,durMs,delayMs,rev) {
+      const anim = ANIM[key];
+      let t = ((ts+delayMs)%durMs)/durMs;
+      if (rev) t = 1-t;
+      const stops=anim.stops, n=stops.length-1;
+      let si=n-1;
+      for (let i=0;i<n;i++) if (t>=stops[i]&&t<=stops[i+1]) { si=i; break; }
+      const frac = eio((t-stops[si])/(stops[si+1]-stops[si]));
+      const f0=anim.frames[si], f1=anim.frames[si+1];
+      return { br:f0.br.map((v,i)=>lerp(v,f1.br[i],frac)), rot:lerp(f0.rot,f1.rot,frac)*Math.PI/180, sc:lerp(f0.sc,f1.sc,frac) };
+    }
+
+    function brToPoints(br,cx,cy,R,N) {
+      const [tlH,trH,brH,blH,tlV,trV,brV,blV]=br.map(v=>v/100);
+      const S=R*2;
+      const sH=Math.min(1,1/(tlH+trH),1/(trH+brH),1/(brH+blH),1/(blH+tlH));
+      const sV=Math.min(1,1/(tlV+trV),1/(trV+brV),1/(brV+blV),1/(blV+tlV));
+      const rr={tlW:tlH*S*sH,tlH:tlV*S*sV,trW:trH*S*sH,trH:trV*S*sV,brW:brH*S*sH,brH:brV*S*sV,blW:blH*S*sH,blH:blV*S*sV};
+      const x0=cx-R,y0=cy-R,x1=cx+R,y1=cy+R;
+      const pts=[];
+      const A=Math.round(N*.18),G=Math.round(N*.07);
+      function arc(ocx,ocy,rw,rh,a0,a1,steps) {
+        for (let i=0;i<=steps;i++) { const a=(a0+(a1-a0)*(i/steps))*Math.PI/180; pts.push({x:ocx+Math.cos(a)*rw,y:ocy+Math.sin(a)*rh}); }
+      }
+      function seg(ax,ay,bx,by,steps) {
+        for (let i=1;i<=steps;i++) pts.push({x:lerp(ax,bx,i/steps),y:lerp(ay,by,i/steps)});
+      }
+      arc(x0+rr.tlW,y0+rr.tlH,rr.tlW,rr.tlH,180,270,A);
+      seg(x0+rr.tlW,y0,x1-rr.trW,y0,G);
+      arc(x1-rr.trW,y0+rr.trH,rr.trW,rr.trH,270,360,A);
+      seg(x1,y0+rr.trH,x1,y1-rr.brH,G);
+      arc(x1-rr.brW,y1-rr.brH,rr.brW,rr.brH,0,90,A);
+      seg(x1-rr.brW,y1,x0+rr.blW,y1,G);
+      arc(x0+rr.blW,y1-rr.blH,rr.blW,rr.blH,90,180,A);
+      seg(x0,y1-rr.blH,x0,y0+rr.tlH,G);
+      return pts;
+    }
+
+    let mouse = null, mLerp = null;
+
+    // Интерактив только на десктопе
+    if (isDesktop) {
+      const hero = document.getElementById('hero');
+      hero.addEventListener('mousemove', e => {
+        const r = cv.getBoundingClientRect();
+        mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+      });
+      hero.addEventListener('mouseleave', () => { mouse = null; });
+    }
+
+    function drawLayer(layer, ts, driftX, driftY, deformWeight) {
+      const W=cv.width, H=cv.height;
+      const baseCx=W/2+driftX, baseCy=H/2+driftY;
+      const {br,rot,sc} = getFrame(layer.anim,ts,layer.durMs,layer.delayMs,layer.rev);
+      const scaleFactor = cv.offsetWidth / anchor.offsetWidth;
+      const R = (anchor.offsetWidth/2) * (1-layer.inset) * sc * scaleFactor * 0.62;
+
+      let pts = brToPoints(br,baseCx,baseCy,R,120);
+
+      if (rot !== 0) {
+        pts = pts.map(p => {
+          const dx=p.x-baseCx, dy=p.y-baseCy;
+          return { x:baseCx+dx*Math.cos(rot)-dy*Math.sin(rot), y:baseCy+dx*Math.sin(rot)+dy*Math.cos(rot) };
+        });
+      }
+
+      if (mLerp && deformWeight > 0.001) {
+        const pullZone = R * 2.5;
+        const maxStr = R * 0.22 * (1 - layer.inset*0.5) * deformWeight;
+        pts = pts.map(p => {
+          const dx=mLerp.x-p.x, dy=mLerp.y-p.y;
+          const dist=Math.sqrt(dx*dx+dy*dy);
+          if (dist > pullZone || dist < 1) return p;
+          const t=1-dist/pullZone;
+          const str=t*t*t*maxStr;
+          const ang=Math.atan2(dy,dx);
+          return { x:p.x+Math.cos(ang)*str, y:p.y+Math.sin(ang)*str };
+        });
+      }
+
+      ctx.beginPath();
+      const n=pts.length;
+      ctx.moveTo((pts[0].x+pts[n-1].x)/2,(pts[0].y+pts[n-1].y)/2);
+      for (let i=0;i<n;i++) {
+        const p0=pts[i], p1=pts[(i+1)%n];
+        ctx.quadraticCurveTo(p0.x,p0.y,(p0.x+p1.x)/2,(p0.y+p1.y)/2);
+      }
+      ctx.closePath();
+      const [r,g,b,a]=layer.rgba;
+      ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+      ctx.fill();
+    }
+
+    function loop(ts) {
+      if (mouse && !mLerp) mLerp = {...mouse};
+      if (mouse && mLerp) { mLerp.x += (mouse.x-mLerp.x)*.06; mLerp.y += (mouse.y-mLerp.y)*.06; }
+      if (!mouse) mLerp = null;
+
+      const W=cv.width, H=cv.height;
+      ctx.clearRect(0,0,W,H);
+
+      const baseCx=W/2, baseCy=H/2;
+      const scaleFactor=cv.offsetWidth/anchor.offsetWidth;
+      const outerR=(anchor.offsetWidth/2)*scaleFactor*0.62;
+
+      let deformWeight=0, driftX=0, driftY=0;
+
+      if (mLerp) {
+        const dx=mLerp.x-baseCx, dy=mLerp.y-baseCy;
+        const distToCenter=Math.sqrt(dx*dx+dy*dy);
+        const maxDrift=28;
+        const driftT=clamp(distToCenter/(W*0.5),0,1);
+        const driftStr=driftT*maxDrift;
+        driftX=distToCenter>0?(dx/distToCenter)*driftStr:0;
+        driftY=distToCenter>0?(dy/distToCenter)*driftStr:0;
+        const fadeZone=outerR*0.6;
+        const outsideDist=distToCenter-outerR;
+        deformWeight=smoothstep(0,fadeZone,outsideDist);
+      }
+
+      for (let i=0;i<LAYERS.length;i++) drawLayer(LAYERS[i],ts,driftX,driftY,deformWeight);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  })();
 </script>
 </body>
 </html>
