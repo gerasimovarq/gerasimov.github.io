@@ -107,7 +107,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
 
   /* иллюстрация — блоб */
@@ -182,7 +182,7 @@
 
   h1 {
     font-family: var(--f-display);
-    font-size: clamp(56px, 12.5vw, 182px);
+    font-size: clamp(48px, 12.5vw, 182px);
     font-weight: 900;
     line-height: .88;
     letter-spacing: -.035em;
@@ -368,11 +368,12 @@
     height: 0;
     background: #000;
   }
-  .portfolio-showreel iframe {
+  .portfolio-showreel video {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     border: 0;
+    object-fit: cover;
   }
   .portfolio-links-row {
     display: grid;
@@ -567,7 +568,35 @@
   @keyframes fadeUp    { to { opacity: 1; transform: none; } }
 
   /* ── MOBILE ── */
-  @media (max-width: 900px) {
+  /* ── BACK TO TOP ── */
+  #back-top {
+    position: fixed;
+    bottom: 36px;
+    right: 36px;
+    width: 48px; height: 48px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .35s var(--ease), transform .35s var(--ease), background .2s;
+    pointer-events: none;
+  }
+  #back-top.visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  #back-top:hover { background: var(--accent); color: var(--ink); }
+
+
     nav { padding: 22px 24px; }
     .nav-links { display: none; }
     #hero { padding: 0 24px 56px; }
@@ -691,13 +720,14 @@
     <p class="portfolio-sub">Шоурил и ссылки на площадки с работами.</p>
   </div>
   <div class="portfolio-showreel reveal">
-    <iframe
-      id="showreel-iframe"
-      src="https://www.youtube-nocookie.com/embed/d0YL5g78kRU?rel=0&modestbranding=1&enablejsapi=1"
-      title="Showreel — Сергей Герасимов"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
+    <video
+      id="showreel-video"
+      src="https://pub-69e642797b6b46f986e15b7a11a1d3d4.r2.dev/2026-05-04_Showreel-UPD.webm"
+      loop
+      muted
+      playsinline
+      preload="none"
+    ></video>
   </div>
   <div class="portfolio-links-row reveal">
     <a href="https://dribbble.com/motionpattern" target="_blank" rel="noopener" class="portfolio-link-item">
@@ -824,6 +854,9 @@
   <span>© 2026 · Моушн-дизайнер</span>
 </footer>
 
+<!-- BACK TO TOP -->
+<button id="back-top" aria-label="Наверх">↑</button>
+
 <script>
   // ── Cursor
   const cursor = document.getElementById('cursor');
@@ -860,27 +893,28 @@
   }, { passive: true });
 
   // ── Showreel autoplay
-  const showreelIframe = document.getElementById('showreel-iframe');
-  if (showreelIframe) {
+  const showreelVideo = document.getElementById('showreel-video');
+  if (showreelVideo) {
     const showreelObs = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        const src = showreelIframe.src;
         if (entry.isIntersecting) {
-          // Add autoplay+mute if not already present
-          if (!src.includes('autoplay=1')) {
-            showreelIframe.src = src + '&autoplay=1&mute=1';
-          }
+          showreelVideo.play();
         } else {
-          // Stop playback when out of view by resetting src without autoplay
-          showreelIframe.src = showreelIframe.src
-            .replace('&autoplay=1&mute=1', '')
-            .replace('&autoplay=1', '')
-            .replace('&mute=1', '');
+          showreelVideo.pause();
         }
       });
     }, { threshold: 0.4 });
-    showreelObs.observe(showreelIframe);
+    showreelObs.observe(showreelVideo);
   }
+
+  // ── Back to top
+  const backTop = document.getElementById('back-top');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  backTop.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  backTop.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 
   const io = new IntersectionObserver(entries => {
     entries.forEach(entry => {
