@@ -5,6 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%2374c2fb'/></svg>">
 <title>Сергей Герасимов — Моушн-дизайнер</title>
+<meta name="description" content="Сергей Герасимов — моушн-дизайнер. Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов: After Effects, Lottie, Telegram-стикеры, YouTube. От брифа до финального файла.">
+<link rel="canonical" href="https://gerasimov.cc/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Сергей Герасимов">
+<meta property="og:title" content="Сергей Герасимов — Моушн-дизайнер">
+<meta property="og:description" content="Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.">
+<meta property="og:url" content="https://gerasimov.cc/">
+<meta property="og:image" content="https://cdn.gerasimov.cc/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Сергей Герасимов — моушн-дизайнер">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Сергей Герасимов — Моушн-дизайнер">
+<meta name="twitter:description" content="Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.">
+<meta name="twitter:image" content="https://cdn.gerasimov.cc/og.jpg">
+
+<meta name="theme-color" content="#F5F4F0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
@@ -61,6 +83,15 @@
   body.cursor-hover #cursor-ring { width: 60px; height: 60px; opacity: .2; }
   body.cursor-dark #cursor-ring { border-color: rgba(255,255,255,.3); }
 
+  /* ── KEYBOARD FOCUS ── */
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+    border-radius: 3px;
+  }
+  #portfolio :focus-visible,
+  .mobile-menu :focus-visible { outline-color: var(--accent); }
+
   /* ── NAV ── */
   nav {
     position: fixed;
@@ -100,6 +131,76 @@
     transition: opacity .2s;
   }
   .nav-links a:hover { opacity: 1; }
+
+  .nav-right { display: flex; align-items: center; gap: 28px; }
+  .lang-switch { display: inline-flex; align-items: center; gap: 9px; }
+  .lang-opt {
+    background: none; border: none; padding: 0; cursor: pointer;
+    font-family: var(--f-display); font-size: 12px; font-weight: 500;
+    letter-spacing: .06em; color: var(--ink); opacity: .4;
+    transition: opacity .2s;
+  }
+  .lang-opt:hover { opacity: .75; }
+  .lang-opt.active { opacity: 1; }
+  .lang-sep { width: 1px; height: 11px; background: rgba(24,24,24,.22); }
+
+  /* burger — скрыт на десктопе */
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 44px; height: 44px;
+    margin: -10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 110;
+  }
+  .burger span {
+    display: block;
+    width: 26px; height: 1.5px;
+    margin: 0 auto;
+    background: var(--ink);
+    transition: transform .35s var(--ease), opacity .25s;
+  }
+  body.menu-open .burger span:nth-child(1) { transform: translateY(3.75px) rotate(45deg); }
+  body.menu-open .burger span:nth-child(2) { transform: translateY(-3.75px) rotate(-45deg); }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 105;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .4s var(--ease), visibility .4s;
+  }
+  body.menu-open .mobile-menu { opacity: 1; visibility: visible; }
+  .mobile-menu-links { list-style: none; text-align: center; }
+  .mobile-menu-links li { overflow: hidden; }
+  .mobile-menu-links a {
+    display: block;
+    font-family: var(--f-display);
+    font-size: clamp(34px, 11vw, 56px);
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.25;
+    text-decoration: none;
+    color: var(--ink);
+    padding: 6px 0;
+    transform: translateY(110%);
+    transition: transform .5s var(--ease), color .2s;
+  }
+  body.menu-open .mobile-menu-links a { transform: translateY(0); }
+  body.menu-open .mobile-menu-links li:nth-child(1) a { transition-delay: .08s; }
+  body.menu-open .mobile-menu-links li:nth-child(2) a { transition-delay: .14s; }
+  body.menu-open .mobile-menu-links li:nth-child(3) a { transition-delay: .20s; }
+  body.menu-open .mobile-menu-links li:nth-child(4) a { transition-delay: .26s; }
+  .mobile-menu-links a:active { color: var(--accent); }
 
   /* ── HERO ── */
   #hero {
@@ -582,12 +683,14 @@
   /* ── MOBILE ── */
   @media (max-width: 900px) {
     nav { padding: 22px 24px; }
+    nav.scrolled { padding: 16px 24px; }
     .nav-links { display: none; }
+    .burger { display: flex; }
+    .nav-right { gap: 18px; }
     #hero { padding: 0 24px 56px; }
     section { padding: 80px 24px; }
     footer { padding: 28px 24px; flex-direction: column; gap: 6px; text-align: center; }
 
-    .hero-illus { width: 90vw; top: auto; bottom: -10%; right: -10%; transform: none; opacity: .45; }
     .hero-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
 
     .services-header { grid-template-columns: 1fr; margin-bottom: 48px; }
@@ -604,6 +707,19 @@
     body { cursor: auto; }
     #cursor, #cursor-ring { display: none; }
   }
+
+  /* ── REDUCED MOTION ── */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .name-row, h1, .hero-bottom { opacity: 1 !important; }
+    .reviews-ticker { animation: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -613,14 +729,34 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">SG</a>
-  <ul class="nav-links">
-    <li><a href="#services">Услуги</a></li>
-    <li><a href="#portfolio">Работы</a></li>
-    <li><a href="#reviews">Отзывы</a></li>
-    <li><a href="#contact">Контакт</a></li>
-  </ul>
+  <a href="#hero" class="nav-logo">SG</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#services" data-i18n="t.services">Услуги</a></li>
+      <li><a href="#portfolio" data-i18n="t.work">Работы</a></li>
+      <li><a href="#reviews" data-i18n="t.reviews">Отзывы</a></li>
+      <li><a href="#contact" data-i18n="t.contact">Контакт</a></li>
+    </ul>
+    <div class="lang-switch" role="group" aria-label="Language / Язык">
+      <button type="button" class="lang-opt" data-setlang="ru">RU</button>
+      <span class="lang-sep"></span>
+      <button type="button" class="lang-opt" data-setlang="en">EN</button>
+    </div>
+    <button id="burger" class="burger" aria-label="Меню" data-i18n-aria="aria.menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span>
+    </button>
+  </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+  <ul class="mobile-menu-links">
+    <li><a href="#services" data-i18n="t.services">Услуги</a></li>
+    <li><a href="#portfolio" data-i18n="t.work">Работы</a></li>
+    <li><a href="#reviews" data-i18n="t.reviews">Отзывы</a></li>
+    <li><a href="#contact" data-i18n="t.contact">Контакт</a></li>
+  </ul>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -629,79 +765,82 @@
 
   <div class="hero-top">
     <div class="name-row">
-      <span class="hero-name">Сергей Герасимов</span>
+      <span class="hero-name" data-i18n="t.name">Сергей Герасимов</span>
       <span class="name-line"></span>
       <span class="name-dot"></span>
     </div>
-    <h1>
+    <h1 data-i18n="hero.title">
       Моушн-<br>дизайнер<span class="dot">.</span>
     </h1>
   </div>
 
   <div class="hero-bottom">
-    <p class="hero-desc">Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.</p>
-    <a href="#contact" class="hero-cta">Обсудить проект <span class="arrow">↗</span></a>
+    <p class="hero-desc" data-i18n="hero.desc">Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.</p>
+    <a href="#contact" class="hero-cta" data-i18n="hero.cta">Обсудить проект <span class="arrow">↗</span></a>
   </div>
 
 </section>
 
 <!-- SERVICES -->
 <section id="services">
-  <div class="section-label">Услуги</div>
+  <div class="section-label" data-i18n="t.services">Услуги</div>
   <div class="services-header reveal">
-    <h2 class="services-title">Что я&nbsp;делаю</h2>
-    <p class="services-sub">Работаю с&nbsp;брендами, агентствами и&nbsp;продуктовыми командами. Нужна анимация&nbsp;— обращайтесь.</p>
+    <h2 class="services-title" data-i18n="services.title">Что я&nbsp;делаю</h2>
+    <p class="services-sub" data-i18n="services.sub">Работаю с&nbsp;брендами, агентствами и&nbsp;продуктовыми командами. Нужна анимация&nbsp;— обращайтесь.</p>
   </div>
   <div class="services-grid">
     <div class="service-card reveal">
       <div class="service-num">01</div>
-      <div class="service-name">Логотипы, инфографика, персонажи</div>
-      <div class="service-detail">Оживляю брендовые элементы и&nbsp;иллюстрации. Работаю с&nbsp;любыми стилями.</div>
+      <div class="service-name" data-i18n="s1.name">Логотипы, инфографика, персонажи</div>
+      <div class="service-detail" data-i18n="s1.detail">Оживляю брендовые элементы и&nbsp;иллюстрации. Работаю с&nbsp;любыми стилями.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-num">02</div>
-      <div class="service-name">YouTube: интро, аутро, анимированные вставки</div>
-      <div class="service-detail">Фирменные заставки и&nbsp;переходы для видеоблогеров и&nbsp;каналов.</div>
+      <div class="service-name" data-i18n="s2.name">YouTube: интро, аутро, анимированные вставки</div>
+      <div class="service-detail" data-i18n="s2.detail">Фирменные заставки и&nbsp;переходы для видеоблогеров и&nbsp;каналов.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-num">03</div>
-      <div class="service-name">Lottie-анимации</div>
-      <div class="service-detail">Лёгкие JSON-анимации для сайтов и&nbsp;мобильных приложений.</div>
+      <div class="service-name" data-i18n="s3.name">Lottie-анимации</div>
+      <div class="service-detail" data-i18n="s3.detail">Лёгкие JSON-анимации для сайтов и&nbsp;мобильных приложений.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-num">04</div>
-      <div class="service-name">Анимированные стикеры и&nbsp;эмодзи для Telegram</div>
-      <div class="service-detail">Только анимация: TGS-стикеры и&nbsp;кастомные эмодзи для брендов и&nbsp;сообществ.</div>
+      <div class="service-name" data-i18n="s4.name">Анимированные стикеры и&nbsp;эмодзи для Telegram</div>
+      <div class="service-detail" data-i18n="s4.detail">Только анимация: TGS-стикеры и&nbsp;кастомные эмодзи для брендов и&nbsp;сообществ.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-num">05</div>
-      <div class="service-name">Объясняющие и&nbsp;промо-видео, шоурилы</div>
-      <div class="service-detail">Рассказываю о&nbsp;продукте, услуге или&nbsp;идее так, чтобы это запомнилось.</div>
+      <div class="service-name" data-i18n="s5.name">Объясняющие и&nbsp;промо-видео, шоурилы</div>
+      <div class="service-detail" data-i18n="s5.detail">Рассказываю о&nbsp;продукте, услуге или&nbsp;идее так, чтобы это запомнилось.</div>
     </div>
     <div class="service-card reveal">
       <div class="service-num">06</div>
-      <div class="service-name">Анимация презентаций и&nbsp;портфолио</div>
-      <div class="service-detail">Добавляю движение в&nbsp;слайды, чтобы выступление запоминалось.</div>
+      <div class="service-name" data-i18n="s6.name">Анимация презентаций и&nbsp;портфолио</div>
+      <div class="service-detail" data-i18n="s6.detail">Добавляю движение в&nbsp;слайды, чтобы выступление запоминалось.</div>
     </div>
   </div>
 </section>
 
 <!-- PORTFOLIO -->
 <section id="portfolio">
-  <div class="section-label">Работы</div>
+  <div class="section-label" data-i18n="t.work">Работы</div>
   <div class="portfolio-header reveal">
-    <h2 class="portfolio-title">Избранное</h2>
-    <p class="portfolio-sub">Шоурил и ссылки на площадки с работами.</p>
+    <h2 class="portfolio-title" data-i18n="portfolio.title">Избранное</h2>
+    <p class="portfolio-sub" data-i18n="portfolio.sub">Шоурил и ссылки на площадки с работами.</p>
   </div>
   <div class="portfolio-showreel reveal">
     <video
       id="showreel-video"
-      src="https://cdn.gerasimov.cc/2026-05-04_Showreel-UPD.webm"
+      poster="https://cdn.gerasimov.cc/showreel-poster.jpg"
       loop
       muted
       playsinline
       preload="none"
-    ></video>
+    >
+      <source src="https://cdn.gerasimov.cc/2026-05-04_Showreel-UPD.webm" type="video/webm">
+      <source src="https://cdn.gerasimov.cc/2026-05-04_Showreel-UPD.mp4" type="video/mp4">
+    </video>
   </div>
   <div class="portfolio-links-row reveal">
     <a href="https://dribbble.com/motionpattern" target="_blank" rel="noopener" class="portfolio-link-item">
@@ -723,13 +862,27 @@
 
 <!-- REVIEWS -->
 <section id="reviews">
-  <div class="section-label">Отзывы</div>
+  <div class="section-label" data-i18n="t.reviews">Отзывы</div>
   <div class="reviews-header reveal">
-    <h2 class="reviews-title">Говорят клиенты</h2>
-    <p class="reviews-sub">Работал с&nbsp;брендами и&nbsp;командами из&nbsp;разных стран. Вот что они говорят.</p>
+    <h2 class="reviews-title" data-i18n="reviews.title">Говорят клиенты</h2>
+    <p class="reviews-sub" data-i18n="reviews.sub">Работал с&nbsp;брендами и&nbsp;командами из&nbsp;разных стран. Вот что они говорят.</p>
   </div>
 
-  <div class="reviews-featured">
+  <div class="reviews-featured" lang="en">
+    <div class="review-card reveal">
+      <p class="review-quote">Sergei is a very strong motion designer with a professional and reliable approach to work. Great attention to detail, solid creative thinking, and consistently high-quality results. Really enjoyed collaborating together.</p>
+      <div>
+        <div class="review-name">Mikhail Naliukhin</div>
+        <div class="review-role">Global Director of inlab @ inDrive</div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <p class="review-quote">Over the past few years, I have had the pleasure of working with Sergei on several animation projects and short-form social content. He is exceptionally skilled in motion design, communicates clearly, and consistently delivers efficient, well-executed work. He also brings valuable creative input, often suggesting ideas that elevate the final outcome. Sergei is a great addition to any team, and working with him always means a high-quality, professional result.</p>
+      <div>
+        <div class="review-name">Ilya Romanoff</div>
+        <div class="review-role">Senior Project Manager, Whale Studio</div>
+      </div>
+    </div>
     <div class="review-card reveal">
       <p class="review-quote">As a motion designer, he is precise, talented, and deeply attentive to detail. But beyond his professional skills, what stands out most is his genuine involvement in every project. He never treats work mechanically: he listens, thinks, notices, improves, and brings warmth and care into the process. Working with Sergei is incredibly easy and pleasant. He is responsive, kind, reliable, and always committed to making the result as good as it can be. I am very grateful for our collaboration and can recommend him with absolute confidence.</p>
       <div>
@@ -789,7 +942,7 @@
   </div>
 
   <div class="reviews-ticker-wrap">
-    <div class="reviews-ticker">
+    <div class="reviews-ticker" lang="en">
       <div class="ticker-item">He completes my briefs perfectly every single time.</div>
       <div class="ticker-item">Working with Sergei is always a pleasure — his work is outstanding.</div>
       <div class="ticker-item">Easy to work with. Understands the brief and always does a great job!</div>
@@ -813,14 +966,19 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="section-label">Контакт</div>
+  <div class="section-label" data-i18n="t.contact">Контакт</div>
   <div class="contact-inner">
     <div class="reveal">
-      <h2 class="contact-title">Есть<br>проект<em>?</em></h2>
+      <h2 class="contact-title" data-i18n="contact.title">Есть<br>проект<em>?</em></h2>
     </div>
     <div class="reveal">
-      <p class="contact-desc">Расскажите о&nbsp;задаче&nbsp;— обсудим детали, сроки и&nbsp;стоимость. Обычно отвечаю в&nbsp;течение дня.</p>
+      <p class="contact-desc" data-i18n="contact.desc">Расскажите о&nbsp;задаче&nbsp;— обсудим детали, сроки и&nbsp;стоимость. Обычно отвечаю в&nbsp;течение дня.</p>
       <div class="contact-links">
+        <a href="mailto:hi@gerasimov.cc" class="contact-link">
+          <span>Email</span>
+          <span class="contact-link-platform">hi@gerasimov.cc</span>
+          <span class="contact-link-arr">↗</span>
+        </a>
         <a href="https://t.me/gerasimovarq" target="_blank" rel="noopener" class="contact-link">
           <span>Telegram</span>
           <span class="contact-link-platform">@gerasimovarq</span>
@@ -838,16 +996,47 @@
 
 <!-- FOOTER -->
 <footer>
-  <strong>Сергей Герасимов</strong>
-  <span>© 2026 · Моушн-дизайнер</span>
+  <strong data-i18n="t.name">Сергей Герасимов</strong>
+  <span data-i18n="footer.tagline">© 2026 · Моушн-дизайнер</span>
 </footer>
 
 <!-- SCROLL TO TOP -->
-<button id="scroll-top" aria-label="Наверх">
+<button id="scroll-top" aria-label="Наверх" data-i18n-aria="aria.top">
   <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
 <script>
+
+  // ── i18n: двуязычность RU/EN
+  const I18N = {"ru": {"t.name": "Сергей Герасимов", "t.services": "Услуги", "t.work": "Работы", "t.reviews": "Отзывы", "t.contact": "Контакт", "hero.title": "Моушн-<br>дизайнер<span class=\"dot\">.</span>", "hero.desc": "Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.", "hero.cta": "Обсудить проект <span class=\"arrow\">↗</span>", "services.title": "Что я&nbsp;делаю", "services.sub": "Работаю с&nbsp;брендами, агентствами и&nbsp;продуктовыми командами. Нужна анимация&nbsp;— обращайтесь.", "s1.name": "Логотипы, инфографика, персонажи", "s1.detail": "Оживляю брендовые элементы и&nbsp;иллюстрации. Работаю с&nbsp;любыми стилями.", "s2.name": "YouTube: интро, аутро, анимированные вставки", "s2.detail": "Фирменные заставки и&nbsp;переходы для видеоблогеров и&nbsp;каналов.", "s3.name": "Lottie-анимации", "s3.detail": "Лёгкие JSON-анимации для сайтов и&nbsp;мобильных приложений.", "s4.name": "Анимированные стикеры и&nbsp;эмодзи для Telegram", "s4.detail": "Только анимация: TGS-стикеры и&nbsp;кастомные эмодзи для брендов и&nbsp;сообществ.", "s5.name": "Объясняющие и&nbsp;промо-видео, шоурилы", "s5.detail": "Рассказываю о&nbsp;продукте, услуге или&nbsp;идее так, чтобы это запомнилось.", "s6.name": "Анимация презентаций и&nbsp;портфолио", "s6.detail": "Добавляю движение в&nbsp;слайды, чтобы выступление запоминалось.", "portfolio.title": "Избранное", "portfolio.sub": "Шоурил и ссылки на площадки с работами.", "reviews.title": "Говорят клиенты", "reviews.sub": "Работал с&nbsp;брендами и&nbsp;командами из&nbsp;разных стран. Вот что они говорят.", "contact.title": "Есть<br>проект<em>?</em>", "contact.desc": "Расскажите о&nbsp;задаче&nbsp;— обсудим детали, сроки и&nbsp;стоимость. Обычно отвечаю в&nbsp;течение дня.", "footer.tagline": "© 2026 · Моушн-дизайнер", "aria.top": "Наверх", "aria.menu": "Меню", "meta.title": "Сергей Герасимов — Моушн-дизайнер", "meta.desc": "Сергей Герасимов — моушн-дизайнер. Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов: After Effects, Lottie, Telegram-стикеры, YouTube. От брифа до финального файла."}, "en": {"t.name": "Sergei Gerasimov", "t.services": "Services", "t.work": "Work", "t.reviews": "Reviews", "t.contact": "Contact", "hero.title": "Motion<br>Designer<span class=\"dot\">.</span>", "hero.desc": "Animation for logos, illustrations, explainer videos and promo clips — from brief to final file.", "hero.cta": "Start a project <span class=\"arrow\">↗</span>", "services.title": "What&nbsp;I&nbsp;do", "services.sub": "I work with brands, agencies and product teams. Need animation? Get&nbsp;in&nbsp;touch.", "s1.name": "Logos, infographics, characters", "s1.detail": "I bring brand elements and illustrations to life — in any style.", "s2.name": "YouTube: intros, outros, animated inserts", "s2.detail": "Branded openers and transitions for creators and channels.", "s3.name": "Lottie animations", "s3.detail": "Lightweight JSON animations for websites and mobile apps.", "s4.name": "Animated stickers & emoji for Telegram", "s4.detail": "Animation only: TGS stickers and custom emoji for brands and communities.", "s5.name": "Explainer & promo videos, showreels", "s5.detail": "Telling a product, service or idea in a way that sticks.", "s6.name": "Presentation & portfolio animation", "s6.detail": "Adding motion to slides so the talk gets remembered.", "portfolio.title": "Selected work", "portfolio.sub": "Showreel and links to where I post my work.", "reviews.title": "What clients say", "reviews.sub": "I've worked with brands and teams across the world. Here's what they say.", "contact.title": "Got&nbsp;a<br>project<em>?</em>", "contact.desc": "Tell me about the task — we'll talk through scope, timing and cost. I usually reply within a day.", "footer.tagline": "© 2026 · Motion Designer", "aria.top": "Back to top", "aria.menu": "Menu", "meta.title": "Sergei Gerasimov — Motion Designer", "meta.desc": "Sergei Gerasimov — motion designer. Animation for logos, illustrations, explainer videos and promo clips: After Effects, Lottie, Telegram stickers, YouTube. From brief to final file."}};
+  function setLang(lang) {
+    if (!I18N[lang]) lang = 'ru';
+    const dict = I18N[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = dict[el.dataset.i18n]; if (v != null) el.innerHTML = v;
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const v = dict[el.dataset.i18nAria]; if (v != null) el.setAttribute('aria-label', v);
+    });
+    document.documentElement.lang = lang;
+    if (dict['meta.title']) document.title = dict['meta.title'];
+    const md = document.querySelector('meta[name="description"]');
+    if (md && dict['meta.desc']) md.setAttribute('content', dict['meta.desc']);
+    document.querySelectorAll('.lang-opt').forEach(b =>
+      b.classList.toggle('active', b.dataset.setlang === lang));
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+  (function initLang(){
+    let lang = null;
+    try { lang = localStorage.getItem('lang'); } catch (e) {}
+    if (!lang) lang = (navigator.language || 'ru').toLowerCase().startsWith('ru') ? 'ru' : 'en';
+    setLang(lang);
+    document.querySelectorAll('.lang-opt').forEach(b =>
+      b.addEventListener('click', () => setLang(b.dataset.setlang)));
+  })();
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // ── Cursor
   const cursor = document.getElementById('cursor');
   const ring   = document.getElementById('cursor-ring');
@@ -880,6 +1069,26 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
+
+  // ── Mobile menu
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (burger && mobileMenu) {
+    const setMenu = (open) => {
+      document.body.classList.toggle('menu-open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    burger.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setMenu(false);
+    });
+    window.matchMedia('(min-width: 901px)').addEventListener('change', e => {
+      if (e.matches) setMenu(false);
+    });
+  }
 
   // ── Showreel autoplay
   const showreelVideo = document.getElementById('showreel-video');
@@ -1059,7 +1268,7 @@
       ctx.fill();
     }
 
-    function loop(ts) {
+    function renderFrame(ts) {
       if (mouse && !mLerp) mLerp = {...mouse};
       if (mouse && mLerp) { mLerp.x += (mouse.x-mLerp.x)*.06; mLerp.y += (mouse.y-mLerp.y)*.06; }
       if (!mouse) mLerp = null;
@@ -1087,9 +1296,31 @@
       }
 
       for (let i=0;i<LAYERS.length;i++) drawLayer(LAYERS[i],ts,driftX,driftY,deformWeight);
-      requestAnimationFrame(loop);
     }
-    requestAnimationFrame(loop);
+
+    let rafId = null;
+    function loop(ts) { renderFrame(ts); rafId = requestAnimationFrame(loop); }
+
+    if (!isDesktop || reduceMotion) {
+      // на мобайле и при reduced-motion блоб — статичный декор, без вечного RAF
+      const drawOnce = () => renderFrame(0);
+      drawOnce();
+      window.addEventListener('resize', drawOnce);
+    } else {
+      // на десктопе анимируем только пока hero в зоне видимости
+      const heroEl = document.getElementById('hero');
+      const blobObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!rafId) rafId = requestAnimationFrame(loop);
+          } else if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        });
+      }, { threshold: 0 });
+      blobObs.observe(heroEl);
+    }
   })();
 </script>
 </body>
