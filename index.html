@@ -314,6 +314,11 @@
   .hero-cta:hover { background: var(--accent); color: var(--ink); transform: scale(1.04); }
   .hero-cta .arrow { transition: transform .2s var(--ease); }
   .hero-cta:hover .arrow { transform: translate(3px, -3px); }
+  .ico-arr {
+    width: 1em; height: 1em; vertical-align: middle; flex-shrink: 0;
+    fill: none; stroke: currentColor; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
 
   /* ── SHARED ── */
   section { padding: 112px 48px; }
@@ -624,7 +629,7 @@
   }
   .contact-link:hover { background: var(--ink); color: var(--white); border-color: var(--ink); transform: scale(1.02); }
   .contact-link-platform { font-size: 11px; font-weight: 400; opacity: .45; letter-spacing: .06em; text-transform: uppercase; }
-  .contact-link-arr { transition: transform .2s var(--ease); }
+  .contact-link-arr { transition: transform .2s var(--ease); font-size: 16px; }
   .contact-link:hover .contact-link-arr { transform: translate(3px, -3px); }
 
   /* ── SCROLL TO TOP ── */
@@ -776,7 +781,7 @@
 
   <div class="hero-bottom">
     <p class="hero-desc" data-i18n="hero.desc">Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.</p>
-    <a href="#contact" class="hero-cta" data-i18n="hero.cta">Обсудить проект <span class="arrow">↗</span></a>
+    <a href="#contact" class="hero-cta" data-i18n="hero.cta">Обсудить проект <span class="arrow"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span></a>
   </div>
 
 </section>
@@ -848,14 +853,14 @@
         <div class="portfolio-link-name">Dribbble</div>
         <div class="portfolio-link-meta">motionpattern</div>
       </div>
-      <span class="portfolio-link-arrow">↗</span>
+      <span class="portfolio-link-arrow"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span>
     </a>
     <a href="https://instagram.com/motion.pattern" target="_blank" rel="noopener" class="portfolio-link-item">
       <div>
         <div class="portfolio-link-name">Instagram</div>
         <div class="portfolio-link-meta">motion.pattern</div>
       </div>
-      <span class="portfolio-link-arrow">↗</span>
+      <span class="portfolio-link-arrow"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span>
     </a>
   </div>
 </section>
@@ -977,17 +982,17 @@
         <a href="mailto:hi@gerasimov.cc" class="contact-link">
           <span>Email</span>
           <span class="contact-link-platform">hi@gerasimov.cc</span>
-          <span class="contact-link-arr">↗</span>
+          <span class="contact-link-arr"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span>
         </a>
         <a href="https://t.me/gerasimovarq" target="_blank" rel="noopener" class="contact-link">
           <span>Telegram</span>
           <span class="contact-link-platform">@gerasimovarq</span>
-          <span class="contact-link-arr">↗</span>
+          <span class="contact-link-arr"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span>
         </a>
         <a href="https://instagram.com/motion.pattern" target="_blank" rel="noopener" class="contact-link">
           <span>Instagram</span>
           <span class="contact-link-platform">motion.pattern</span>
-          <span class="contact-link-arr">↗</span>
+          <span class="contact-link-arr"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span>
         </a>
       </div>
     </div>
@@ -1008,7 +1013,7 @@
 <script>
 
   // ── i18n: двуязычность RU/EN
-  const I18N = {"ru": {"t.name": "Сергей Герасимов", "t.services": "Услуги", "t.work": "Работы", "t.reviews": "Отзывы", "t.contact": "Контакт", "hero.title": "Моушн-<br>дизайнер<span class=\"dot\">.</span>", "hero.desc": "Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.", "hero.cta": "Обсудить проект <span class=\"arrow\">↗</span>", "services.title": "Что я&nbsp;делаю", "services.sub": "Работаю с&nbsp;брендами, агентствами и&nbsp;продуктовыми командами. Нужна анимация&nbsp;— обращайтесь.", "s1.name": "Логотипы, инфографика, персонажи", "s1.detail": "Оживляю брендовые элементы и&nbsp;иллюстрации. Работаю с&nbsp;любыми стилями.", "s2.name": "YouTube: интро, аутро, анимированные вставки", "s2.detail": "Фирменные заставки и&nbsp;переходы для видеоблогеров и&nbsp;каналов.", "s3.name": "Lottie-анимации", "s3.detail": "Лёгкие JSON-анимации для сайтов и&nbsp;мобильных приложений.", "s4.name": "Анимированные стикеры и&nbsp;эмодзи для Telegram", "s4.detail": "Только анимация: TGS-стикеры и&nbsp;кастомные эмодзи для брендов и&nbsp;сообществ.", "s5.name": "Объясняющие и&nbsp;промо-видео, шоурилы", "s5.detail": "Рассказываю о&nbsp;продукте, услуге или&nbsp;идее так, чтобы это запомнилось.", "s6.name": "Анимация презентаций и&nbsp;портфолио", "s6.detail": "Добавляю движение в&nbsp;слайды, чтобы выступление запоминалось.", "portfolio.title": "Избранное", "portfolio.sub": "Шоурил и ссылки на площадки с работами.", "reviews.title": "Говорят клиенты", "reviews.sub": "Работал с&nbsp;брендами и&nbsp;командами из&nbsp;разных стран. Вот что они говорят.", "contact.title": "Есть<br>проект<em>?</em>", "contact.desc": "Расскажите о&nbsp;задаче&nbsp;— обсудим детали, сроки и&nbsp;стоимость. Обычно отвечаю в&nbsp;течение дня.", "footer.tagline": "© 2026 · Моушн-дизайнер", "aria.top": "Наверх", "aria.menu": "Меню", "meta.title": "Сергей Герасимов — Моушн-дизайнер", "meta.desc": "Сергей Герасимов — моушн-дизайнер. Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов: After Effects, Lottie, Telegram-стикеры, YouTube. От брифа до финального файла."}, "en": {"t.name": "Sergei Gerasimov", "t.services": "Services", "t.work": "Work", "t.reviews": "Reviews", "t.contact": "Contact", "hero.title": "Motion<br>Designer<span class=\"dot\">.</span>", "hero.desc": "Animation for logos, illustrations, explainer videos and promo clips — from brief to final file.", "hero.cta": "Start a project <span class=\"arrow\">↗</span>", "services.title": "What&nbsp;I&nbsp;do", "services.sub": "I work with brands, agencies and product teams. Need animation? Get&nbsp;in&nbsp;touch.", "s1.name": "Logos, infographics, characters", "s1.detail": "I bring brand elements and illustrations to life — in any style.", "s2.name": "YouTube: intros, outros, animated inserts", "s2.detail": "Branded openers and transitions for creators and channels.", "s3.name": "Lottie animations", "s3.detail": "Lightweight JSON animations for websites and mobile apps.", "s4.name": "Animated stickers & emoji for Telegram", "s4.detail": "Animation only: TGS stickers and custom emoji for brands and communities.", "s5.name": "Explainer & promo videos, showreels", "s5.detail": "Telling a product, service or idea in a way that sticks.", "s6.name": "Presentation & portfolio animation", "s6.detail": "Adding motion to slides so the talk gets remembered.", "portfolio.title": "Selected work", "portfolio.sub": "Showreel and links to where I post my work.", "reviews.title": "What clients say", "reviews.sub": "I've worked with brands and teams across the world. Here's what they say.", "contact.title": "Got&nbsp;a<br>project<em>?</em>", "contact.desc": "Tell me about the task — we'll talk through scope, timing and cost. I usually reply within a day.", "footer.tagline": "© 2026 · Motion Designer", "aria.top": "Back to top", "aria.menu": "Menu", "meta.title": "Sergei Gerasimov — Motion Designer", "meta.desc": "Sergei Gerasimov — motion designer. Animation for logos, illustrations, explainer videos and promo clips: After Effects, Lottie, Telegram stickers, YouTube. From brief to final file."}};
+  const I18N = {"ru": {"t.name": "Сергей Герасимов", "t.services": "Услуги", "t.work": "Работы", "t.reviews": "Отзывы", "t.contact": "Контакт", "hero.title": "Моушн-<br>дизайнер<span class=\"dot\">.</span>", "hero.desc": "Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов — от брифа до финального файла.", "hero.cta": "Обсудить проект <span class=\"arrow\"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span>", "services.title": "Что я&nbsp;делаю", "services.sub": "Работаю с&nbsp;брендами, агентствами и&nbsp;продуктовыми командами. Нужна анимация&nbsp;— обращайтесь.", "s1.name": "Логотипы, инфографика, персонажи", "s1.detail": "Оживляю брендовые элементы и&nbsp;иллюстрации. Работаю с&nbsp;любыми стилями.", "s2.name": "YouTube: интро, аутро, анимированные вставки", "s2.detail": "Фирменные заставки и&nbsp;переходы для видеоблогеров и&nbsp;каналов.", "s3.name": "Lottie-анимации", "s3.detail": "Лёгкие JSON-анимации для сайтов и&nbsp;мобильных приложений.", "s4.name": "Анимированные стикеры и&nbsp;эмодзи для Telegram", "s4.detail": "Только анимация: TGS-стикеры и&nbsp;кастомные эмодзи для брендов и&nbsp;сообществ.", "s5.name": "Объясняющие и&nbsp;промо-видео, шоурилы", "s5.detail": "Рассказываю о&nbsp;продукте, услуге или&nbsp;идее так, чтобы это запомнилось.", "s6.name": "Анимация презентаций и&nbsp;портфолио", "s6.detail": "Добавляю движение в&nbsp;слайды, чтобы выступление запоминалось.", "portfolio.title": "Избранное", "portfolio.sub": "Шоурил и ссылки на площадки с работами.", "reviews.title": "Говорят клиенты", "reviews.sub": "Работал с&nbsp;брендами и&nbsp;командами из&nbsp;разных стран. Вот что они говорят.", "contact.title": "Есть<br>проект<em>?</em>", "contact.desc": "Расскажите о&nbsp;задаче&nbsp;— обсудим детали, сроки и&nbsp;стоимость. Обычно отвечаю в&nbsp;течение дня.", "footer.tagline": "© 2026 · Моушн-дизайнер", "aria.top": "Наверх", "aria.menu": "Меню", "meta.title": "Сергей Герасимов — Моушн-дизайнер", "meta.desc": "Сергей Герасимов — моушн-дизайнер. Анимация логотипов, иллюстраций, объясняющих видео и промо-роликов: After Effects, Lottie, Telegram-стикеры, YouTube. От брифа до финального файла."}, "en": {"t.name": "Sergei Gerasimov", "t.services": "Services", "t.work": "Work", "t.reviews": "Reviews", "t.contact": "Contact", "hero.title": "Motion<br>Designer<span class=\"dot\">.</span>", "hero.desc": "Animation for logos, illustrations, explainer videos and promo clips — from brief to final file.", "hero.cta": "Start a project <span class=\"arrow\"><svg class='ico-arr' viewBox='0 0 24 24' aria-hidden='true'><line x1='7' y1='17' x2='17' y2='7'/><polyline points='7 7 17 7 17 17'/></svg></span>", "services.title": "What&nbsp;I&nbsp;do", "services.sub": "I work with brands, agencies and product teams. Need animation? Get&nbsp;in&nbsp;touch.", "s1.name": "Logos, infographics, characters", "s1.detail": "I bring brand elements and illustrations to life — in any style.", "s2.name": "YouTube: intros, outros, animated inserts", "s2.detail": "Branded openers and transitions for creators and channels.", "s3.name": "Lottie animations", "s3.detail": "Lightweight JSON animations for websites and mobile apps.", "s4.name": "Animated stickers & emoji for Telegram", "s4.detail": "Animation only: TGS stickers and custom emoji for brands and communities.", "s5.name": "Explainer & promo videos, showreels", "s5.detail": "Telling a product, service or idea in a way that sticks.", "s6.name": "Presentation & portfolio animation", "s6.detail": "Adding motion to slides so the talk gets remembered.", "portfolio.title": "Selected work", "portfolio.sub": "Showreel and links to where I post my work.", "reviews.title": "What clients say", "reviews.sub": "I've worked with brands and teams across the world. Here's what they say.", "contact.title": "Got&nbsp;a<br>project<em>?</em>", "contact.desc": "Tell me about the task — we'll talk through scope, timing and cost. I usually reply within a day.", "footer.tagline": "© 2026 · Motion Designer", "aria.top": "Back to top", "aria.menu": "Menu", "meta.title": "Sergei Gerasimov — Motion Designer", "meta.desc": "Sergei Gerasimov — motion designer. Animation for logos, illustrations, explainer videos and promo clips: After Effects, Lottie, Telegram stickers, YouTube. From brief to final file."}};
   function setLang(lang) {
     if (!I18N[lang]) lang = 'ru';
     const dict = I18N[lang];
